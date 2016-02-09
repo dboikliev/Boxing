@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Http;
-using System.Web.Http.Filters;
+﻿using System.Web.Http;
 using Boxing.Api.Services.Filters;
 
-namespace Boxing.Api.Services.App_Start
+namespace Boxing.Api.Services
 {
-    public class FilterConfig
+    public static class FilterConfig
     {
-        public static void RegisterFilters(HttpFilterCollection filterCollection)
+        public static void Register(HttpConfiguration config)
         {
-            filterCollection.Add(new RequireSecureConnectionFilterAttribute());
+            //config.Filters.Add(new RequireSecureConnectionFilterAttribute());
+            config.Filters.Add(new ExceptionToHttpStatusCodeFilterAttribute());
+            config.Filters.Add(new ValidationFilterAttribute());
         }
     }
 }

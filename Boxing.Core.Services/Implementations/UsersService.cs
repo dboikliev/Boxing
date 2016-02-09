@@ -7,6 +7,7 @@ using Boxing.Contracts.Dto;
 using Boxing.Core.DataAccess;
 using Boxing.Core.DataAccess.Entities;
 using Boxing.Core.Services.Exceptions;
+using Boxing.Core.Services.Helpers;
 using Boxing.Core.Services.Interfaces;
 
 namespace Boxing.Core.Services.Implementations
@@ -15,9 +16,9 @@ namespace Boxing.Core.Services.Implementations
     {
         private readonly BoxingContext _context;
 
-        public UsersService(BoxingContext context)
+        public UsersService()
         {
-            _context = context;
+            _context = new BoxingContext();
         }
 
         public void Dispose()
@@ -28,6 +29,11 @@ namespace Boxing.Core.Services.Implementations
         public async Task<UserDto> GetUserAsync(int userId)
         {
             User user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            if (user ==  null)
+            {
+                throw new NotFoundException();
+            }
+
             UserDto userDto = new UserDto
             {
                 Id = user.Id,
@@ -36,7 +42,12 @@ namespace Boxing.Core.Services.Implementations
             };
             return userDto;
         }
-        
+
+        public async Task<bool> IsValidToken(string tokenValue)
+        {
+            return await _context.Users.AnyAsync(u => u.AuthorizationToken == tokenValue);
+        }
+
         public async Task<IEnumerable<UserDto>> GetUsersAsync(int skip, int take)
         {
             IEnumerable<UserDto> users = await _context.Users.OrderBy(u => u.Id).Skip(skip).Take(take).Select(u => new UserDto
@@ -48,21 +59,17 @@ namespace Boxing.Core.Services.Implementations
             return users;
         }
 
-        public void CreateUser(string firstName, string lastName)
-        {
-            _context.Users.Add(new User
-            {
-                FirstName = firstName,
-                LastName = lastName
-            });
-        }
-
         public void CreateUser(UserDto user)
         {
+            byte[] salt = PasswordHash.GenerateSalt();
+            byte[] saltedPassword = PasswordHash.GenerateSaltedHash(user.Password, salt);
+
             _context.Users.Add(new User
             {
                 FirstName = user.FirstName,
-                LastName = user.LastName
+                LastName = user.LastName,
+                PasswordHash = saltedPassword,
+                PasswordSalt = salt
             });
         }
 

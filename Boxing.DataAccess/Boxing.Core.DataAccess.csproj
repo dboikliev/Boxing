@@ -50,13 +50,29 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BoxingContext.cs" />
-    <Compile Include="Configurations\RoleConfiguration.cs" />
+    <Compile Include="Configurations\MatchConfiguration.cs" />
     <Compile Include="Configurations\UserConfiguration.cs" />
-    <Compile Include="Entities\Role.cs" />
+    <Compile Include="Entities\Match.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Migrations\201602071159228_Create.cs" />
     <Compile Include="Migrations\201602071159228_Create.Designer.cs">
       <DependentUpon>201602071159228_Create.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602081040592_CreateMatchesTable.cs" />
+    <Compile Include="Migrations\201602081040592_CreateMatchesTable.Designer.cs">
+      <DependentUpon>201602081040592_CreateMatchesTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602081045036_RemoveRoles.cs" />
+    <Compile Include="Migrations\201602081045036_RemoveRoles.Designer.cs">
+      <DependentUpon>201602081045036_RemoveRoles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602090855307_AlterPasswordColumnTypes.cs" />
+    <Compile Include="Migrations\201602090855307_AlterPasswordColumnTypes.Designer.cs">
+      <DependentUpon>201602090855307_AlterPasswordColumnTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602090945020_AddAuthorizationTokenToUsers.cs" />
+    <Compile Include="Migrations\201602090945020_AddAuthorizationTokenToUsers.Designer.cs">
+      <DependentUpon>201602090945020_AddAuthorizationTokenToUsers.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -68,6 +84,18 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201602071159228_Create.resx">
       <DependentUpon>201602071159228_Create.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602081040592_CreateMatchesTable.resx">
+      <DependentUpon>201602081040592_CreateMatchesTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602081045036_RemoveRoles.resx">
+      <DependentUpon>201602081045036_RemoveRoles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602090855307_AlterPasswordColumnTypes.resx">
+      <DependentUpon>201602090855307_AlterPasswordColumnTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602090945020_AddAuthorizationTokenToUsers.resx">
+      <DependentUpon>201602090945020_AddAuthorizationTokenToUsers.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

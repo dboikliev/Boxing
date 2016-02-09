@@ -8,8 +8,8 @@ namespace Boxing.Core.Services.Interfaces
     public interface IUsersService : IDisposable
     {
         Task<UserDto> GetUserAsync(int userId);
+        Task<bool> IsValidToken(string tokenValue);
         Task<IEnumerable<UserDto>> GetUsersAsync(int skip, int take);
-        void CreateUser(string firstName, string lastName);
         void CreateUser(UserDto user);
         Task SaveAsync();
         Task UpdateUser(UserDto user);
