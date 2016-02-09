@@ -7,13 +7,13 @@ namespace Boxing.Core.DataAccess.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class AddAuthorizationTokenToUsers : IMigrationMetadata
+    public sealed partial class Create : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddAuthorizationTokenToUsers));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Create));
         
         string IMigrationMetadata.Id
         {
-            get { return "201602090945020_AddAuthorizationTokenToUsers"; }
+            get { return "201602091150202_Create"; }
         }
         
         string IMigrationMetadata.Source

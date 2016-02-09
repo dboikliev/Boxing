@@ -28,8 +28,7 @@ namespace Boxing.Api.Services.Controllers
         {
             var userDto = new UserDto
             {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
+                FullName = user.FullName,
                 Password = user.Password
             };
             _usersService.CreateUser(userDto);
@@ -43,15 +42,14 @@ namespace Boxing.Api.Services.Controllers
             var userDto = new UserDto
             {
                 Id = id,
-                FirstName = user.FirstName,
-                LastName = user.LastName
+                FullName = user.FullName
             };
 
             var update = _usersService.UpdateUser(userDto);
             var save = _usersService.SaveAsync();
             await Task.WhenAll(update, save);
 
-        } 
+        }
 
         protected override void Dispose(bool disposing)
         {

@@ -1,20 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Drawing.Printing;
 using System.Linq;
-using System.Net.Http;
 using System.Web;
 
-namespace Boxing.Api.Services.Models
+namespace Boxing.Web.Models
 {
-    public class LoginModel
+    public class LoginViewModel
     {
-        public int Id { get; set; }
         [Required(AllowEmptyStrings = false)]
         public string Username { get; set; }
         [Required(AllowEmptyStrings = false)]
         public string Password { get; set; }
-        
-        public string AuthenticationToken { get; set; }
     }
 }

@@ -51,8 +51,10 @@
   <ItemGroup>
     <Compile Include="Exceptions\NotFoundException.cs" />
     <Compile Include="Helpers\PasswordHash.cs" />
+    <Compile Include="Implementations\LoginsService.cs" />
     <Compile Include="Implementations\MatchesService.cs" />
     <Compile Include="Implementations\UsersService.cs" />
+    <Compile Include="Interfaces\ILoginsService.cs" />
     <Compile Include="Interfaces\IMatchesService.cs" />
     <Compile Include="Interfaces\IUsersService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

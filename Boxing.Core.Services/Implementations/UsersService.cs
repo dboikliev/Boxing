@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Boxing.Contracts.Dto;
 using Boxing.Core.DataAccess;
@@ -37,24 +38,50 @@ namespace Boxing.Core.Services.Implementations
             UserDto userDto = new UserDto
             {
                 Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName
+                FullName = user.FullName
             };
             return userDto;
         }
 
-        public async Task<bool> IsValidToken(string tokenValue)
+        public async Task<UserDto> GetUserAsync(string username, string password)
         {
-            return await _context.Users.AnyAsync(u => u.AuthorizationToken == tokenValue);
+            User user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+            if (user == null)
+            {
+                throw new NotFoundException();
+            }
+         
+            byte[] submittedPasswordHash = PasswordHash.GenerateSaltedHash(password, user.PasswordSalt);
+            var isValidPassword = Enumerable.SequenceEqual(user.PasswordHash, submittedPasswordHash);
+            if (!isValidPassword)
+            {
+                throw new NotFoundException();
+            }
+
+            UserDto userDto = new UserDto
+            {
+                Id = user.Id,
+                FullName = user.FullName
+            };
+            return userDto;
         }
 
-        public async Task<IEnumerable<UserDto>> GetUsersAsync(int skip, int take)
+
+        public async Task<IEnumerable<UserDto>> GetUsersAsync(int skip, int take, string sortBy, string order)
         {
-            IEnumerable<UserDto> users = await _context.Users.OrderBy(u => u.Id).Skip(skip).Take(take).Select(u => new UserDto
+            IQueryable<User> query = _context.Users;
+            if (sortBy == "rating")
+            {
+                query = query.OrderBy(u => u.Rating);
+            }
+            else
+            {
+                query = query.OrderBy(u => u.FullName);
+            }
+            IEnumerable<UserDto> users = await query.Skip(skip).Take(take).Select(u => new UserDto
             {
                 Id = u.Id,
-                FirstName = u.FirstName,
-                LastName = u.LastName
+                FullName = u.FullName
             }).ToListAsync();
             return users;
         }
@@ -66,8 +93,7 @@ namespace Boxing.Core.Services.Implementations
 
             _context.Users.Add(new User
             {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
+                FullName = user.FullName,
                 PasswordHash = saltedPassword,
                 PasswordSalt = salt
             });
@@ -86,8 +112,7 @@ namespace Boxing.Core.Services.Implementations
                 throw new NotFoundException();
             }
 
-            user.FirstName = userDto.FirstName;
-            user.LastName = userDto.LastName;
+            user.FullName = userDto.FullName;
         }
     }
 }

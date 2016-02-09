@@ -10,8 +10,9 @@ namespace Boxing.Core.Services.Interfaces
     public interface IMatchesService : IDisposable
     {
         void CreateMatch(MatchDto match);
-        Task<MatchDto> GetMatch(int id);
+        Task<MatchDto> GetMatchAsync(int id);
         Task<IEnumerable<MatchDto>> GetMatches(int skip, int take);
+        Task UpdateMatchAsync(MatchDto match);
         Task SaveAsync();
     }
 }

@@ -111,6 +111,7 @@
     <Compile Include="Controllers\LoginsController.cs" />
     <Compile Include="Controllers\MatchesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Filters\AdminFilterAttribute.cs" />
     <Compile Include="Filters\AuthorizationTokenFilterAttribute.cs" />
     <Compile Include="Filters\ExceptionFilterAttribute.cs" />
     <Compile Include="Filters\RequireSecureConnectionFilterAttribute.cs" />

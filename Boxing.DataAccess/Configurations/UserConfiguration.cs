@@ -10,11 +10,10 @@ namespace Boxing.Core.DataAccess.Configurations
         {
             ToTable("Users");
             Property(u => u.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            Property(u => u.FirstName).HasMaxLength(100).IsRequired();
-            Property(u => u.LastName).HasMaxLength(100).IsRequired();
+            Property(u => u.FullName).HasMaxLength(200).IsRequired();
             Property(u => u.PasswordHash).HasMaxLength(1024).IsRequired();
             Property(u => u.PasswordSalt).HasMaxLength(1024).IsRequired();
-            Property(u => u.AuthorizationToken).IsRequired();
+            HasOptional(u => u.Login).WithRequired(login => login.User); 
         }
     }
 }
