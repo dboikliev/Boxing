@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Boxing.Contracts;
 using Boxing.Contracts.Dto;
 using Boxing.Core.DataAccess;
 using Boxing.Core.DataAccess.Entities;
@@ -21,33 +24,38 @@ namespace Boxing.Core.Services.Implementations
 
         public async Task<bool> IsValidTokenAsync(string authenticationToken)
         {
-            return await _context.Logins.AnyAsync(login => login.AuthorizationToken == authenticationToken);
+            return await _context.Users.AnyAsync(user => user.AuthenticationToken.ToString() == authenticationToken);
         }
 
-        public LoginDto CreateLogin(int userId)
+        public async Task<LoginDto> CreateLoginAsync(int userId)
         {
-            var login = new Login
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            if (user != null)
             {
-                Id = userId,
-                AuthorizationToken = Guid.NewGuid().ToString(),
-                DateCreated = DateTime.Now.ToUniversalTime(),
-            };
-            var created = _context.Logins.Add(login);
+                user.AuthenticationToken = Guid.NewGuid();
+            }
+            else
+            {
+                throw new NotFoundException("User not found.");
+            }
+
             return new LoginDto
             {
-                Id = created.Id,
-                AuthenticationToken = created.AuthorizationToken
+                Id = user.Id,
+                AuthenticationToken = user.AuthenticationToken.ToString(),
+                Username = user.Username,
+                Role = (RolesEnum)user.RoleId
             };
         }
 
-        public async Task DeleteLoginAsync(int loginId)
+        public async Task DeleteLoginAsync(int userId)
         {
-            Login loginEntity = await _context.Logins.FirstOrDefaultAsync(login => login.Id == loginId);
-            if (loginEntity == null)
+            User user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            if (user == null)
             {
                 throw new NotFoundException();
             }
-            _context.Logins.Remove(loginEntity);
+            user.AuthenticationToken = Guid.Empty;
         }
 
         public async Task SaveAsync()

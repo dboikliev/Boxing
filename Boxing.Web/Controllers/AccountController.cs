@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Boxing.Web.Models;
+using Boxing.Web.ViewModels;
 using Microsoft.Owin.Security.Google;
 using RestTestWebApp.Models;
 using RestTestWebApp.Services;
@@ -30,29 +32,62 @@ namespace Boxing.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> Login(LoginViewModel model)
         {
+            if (!ModelState.IsValid)    
+            {
+                return View();
+            }
             var response =
-                _webClientService.ExecutePost<LoginViewModel>(new ApiRequest()
+                _webClientService.ExecutePost<LoginResponse>(new ApiRequest()
                 {
                     EndPoint = "logins",
                     Request = model
                 });
-            if (response != null)
+            if (response != null && response.Payload != null)
             {
-                Session["Username"] = response.Username;
-                return View(response);
+                Session["Authentication-Token"] = response.Payload.AuthenticationToken;
+                Session["UserId"] = response.Payload.Id;
+                Session["Username"] = response.Payload.Username;
+                Session["Role"] = response.Payload.Role;
+                return View(model);
             }
             ModelState.AddModelError(string.Empty, "Invalid username or password");
             return View();
         }
 
-        public async Task<ActionResult> LogOut()
+        public async Task<ActionResult> LogOff()
         {
-            return View();
+            _webClientService.ExecuteDelete(new ApiRequest
+            {
+                EndPoint = $"logins?id={(int?)Session["UserId"]}",
+            });
+
+            Session["Authentication-Token"] = null;
+            Session["Id"] = null;
+            Session["Username"] = null;
+            Session["Role"] = null;
+            return View("Login");
         }
+
 
         public async Task<ActionResult> Register()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Register(RegistrationViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            var response = _webClientService.ExecutePost<object>(new ApiRequest { EndPoint = "users", Request = model });
+            if (response.HttpStatusCode != HttpStatusCode.Created)
+            {
+                ModelState.AddModelError(string.Empty, "Something went wrong.");
+                return View();
+            }
+            return View("Login");
         }
     }
 }

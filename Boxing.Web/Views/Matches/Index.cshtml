@@ -1,0 +1,62 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Boxing.Web.Models
+@model Boxing.Web.ViewModels.MatchesListViewModel
+
+<table>
+    <thead>
+        <tr>
+            <th>Boxer 1</th>
+            <th>Boxer 2</th>
+            <th>Date</th>
+            <th>Place</th>
+            <th>Description</th>
+            <th>Winner</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var match in Model.Matches)
+        {
+            <tr>
+
+                <td>
+                    @match.Boxer1
+                </td>
+                <td>
+                    @match.Boxer2
+                </td>
+                <td>
+                    @match.DateOfMatch
+                </td>
+                <td>
+                    @match.Place
+                </td>
+                <td>
+                    @match.Description
+                </td>
+                <td>
+                    @if (!match.Winner.HasValue)
+                    {
+                        @: None
+                    }
+                    else
+                    {
+                        @: @(match.Winner.Value == 1 ? match.Boxer1 : match.Boxer2)
+                    }
+                </td>
+                <td>
+                    @match.Status.ToString()
+                </td>
+            </tr>
+
+        }
+    </tbody>
+</table>
+@for (int i = 1; i <= Model.PagesCount; i++)
+{
+    <div style="display: inline-block">
+        @Html.ActionLink(i.ToString(), "Index", new { skip = (i - 1) * Model.MatchesPerPage, take = Model.MatchesPerPage })
+    </div>
+}

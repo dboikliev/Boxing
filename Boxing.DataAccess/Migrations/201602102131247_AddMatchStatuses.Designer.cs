@@ -7,13 +7,13 @@ namespace Boxing.Core.DataAccess.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class UpdateUsers : IMigrationMetadata
+    public sealed partial class AddMatchStatuses : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(UpdateUsers));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddMatchStatuses));
         
         string IMigrationMetadata.Id
         {
-            get { return "201602091301480_UpdateUsers"; }
+            get { return "201602102131247_AddMatchStatuses"; }
         }
         
         string IMigrationMetadata.Source

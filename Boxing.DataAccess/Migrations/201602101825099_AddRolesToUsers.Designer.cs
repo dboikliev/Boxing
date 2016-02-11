@@ -7,13 +7,13 @@ namespace Boxing.Core.DataAccess.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class Create : IMigrationMetadata
+    public sealed partial class AddRolesToUsers : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Create));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddRolesToUsers));
         
         string IMigrationMetadata.Id
         {
-            get { return "201602091150202_Create"; }
+            get { return "201602101825099_AddRolesToUsers"; }
         }
         
         string IMigrationMetadata.Source

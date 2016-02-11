@@ -14,7 +14,8 @@ namespace Boxing.Core.DataAccess
 
         public DbSet<User> Users { get; set; }
         public DbSet<Match> Matches { get; set; }
-        public DbSet<Login> Logins { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Status> Statuses { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -22,7 +23,8 @@ namespace Boxing.Core.DataAccess
 
             modelBuilder.Configurations.Add(new UserConfiguration());
             modelBuilder.Configurations.Add(new MatchConfiguration());
-            modelBuilder.Configurations.Add(new LoginConfiguration());
+            modelBuilder.Configurations.Add(new RoleConfiguration());
+            modelBuilder.Configurations.Add(new StatusConfiguration());
         }
 
         public static void SetInitializer()

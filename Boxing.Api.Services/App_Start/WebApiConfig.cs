@@ -19,6 +19,11 @@ namespace Boxing.Api.Services
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            config.Routes.MapHttpRoute(
+                name: "OneLevelNested",
+                routeTemplate: "api/{controller}/{matchId}/{action}"
+            );
         }
     }
 }

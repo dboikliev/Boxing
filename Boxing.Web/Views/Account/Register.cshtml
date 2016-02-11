@@ -1,0 +1,38 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Boxing.Web.ViewModels.RegistrationViewModel
+@Html.ValidationSummary(true)
+
+@if (!string.IsNullOrEmpty(Session["Username"] as string))
+{
+    @: You are currently logged in with another account
+}
+else
+{
+    using (Html.BeginForm("Register", "Account", FormMethod.Post))
+    {
+        <div>
+            @Html.LabelFor(m => m.Username)
+            @Html.TextBoxFor(m => m.Username)
+            @Html.ValidationMessageFor(m => m.Username)
+        </div>
+        <div>
+            @Html.LabelFor(m => m.FullName)
+            @Html.TextBoxFor(m => m.FullName)
+            @Html.ValidationMessageFor(m => m.FullName)
+        </div>
+        <div>
+            @Html.LabelFor(m => m.Password)
+            @Html.TextBoxFor(m => m.Password, new { type = "password" })
+            @Html.ValidationMessageFor(m => m.Password)
+        </div>
+        <div>
+            @Html.LabelFor(m => m.RepeatedPassword)
+            @Html.TextBoxFor(m => m.RepeatedPassword, new { type = "password" })
+            @Html.ValidationMessageFor(m => m.RepeatedPassword)
+        </div>
+        <input type="submit" value="Submit" />
+    }
+}
+

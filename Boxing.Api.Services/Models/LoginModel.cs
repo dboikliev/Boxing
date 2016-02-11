@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Http;
 using System.Web;
+using Boxing.Contracts;
 
 namespace Boxing.Api.Services.Models
 {
@@ -16,5 +17,6 @@ namespace Boxing.Api.Services.Models
         public string Password { get; set; }
         
         public string AuthenticationToken { get; set; }
+        public RolesEnum Role { get; set; }
     }
 }

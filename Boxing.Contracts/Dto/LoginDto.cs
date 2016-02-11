@@ -12,6 +12,6 @@ namespace Boxing.Contracts.Dto
         public string Username { get; set; }
         public string Password { get; set; }
         public string AuthenticationToken { get; set; }
-        public int UserId { get; set; }
+        public RolesEnum Role { get; set; }
     }
 }

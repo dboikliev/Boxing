@@ -1,0 +1,43 @@
+﻿@model Boxing.Web.ViewModels.MatchViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Edit", "Matches", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.Id)
+    @Html.ValidationSummary()
+    <div>
+        @Html.LabelFor(m => m.Boxer1)
+        @Html.EditorFor(m => m.Boxer1)
+    </div>
+    <div>
+        @Html.LabelFor(m => m.Boxer2)
+        @Html.EditorFor(m => m.Boxer2)
+    </div>
+    <div>
+        @Html.LabelFor(m => m.Place)
+        @Html.EditorFor(m => m.Place)
+    </div>
+    <div>
+        @Html.LabelFor(m => m.Description)
+        @Html.EditorFor(m => m.Description)
+    </div>
+    <div>
+        @Html.LabelFor(m => m.DateOfMatch)
+        @Html.EditorFor(m => m.DateOfMatch, new {type = "datetime"})
+    </div>
+    <div>
+        @Html.LabelFor(m => m.Winner)
+        @Html.EditorFor(m => m.Winner)
+    </div>
+    <input type="submit" value="Save" />
+}
+
+@using (Html.BeginForm("Cancel", "Matches", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.Id);
+    <input type="submit" value="Cancel the match"/>
+}
+

@@ -9,6 +9,7 @@ namespace RestTestWebApp.Models
     {
         public string EndPoint { get; set; }
 
+        public Dictionary<string, string> Headers { get; set; } = new Dictionary<string, string>();
         public object Request { get; set; }
     }
 }

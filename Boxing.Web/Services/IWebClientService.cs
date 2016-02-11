@@ -8,11 +8,11 @@ namespace RestTestWebApp.Services
 {
     public interface IWebClientService
     {
-        TResponse ExecuteGet<TResponse>(ApiRequest request);
+        ApiResponse<TResponse> ExecuteGet<TResponse>(ApiRequest request) where TResponse : new();
 
-        TResponse ExecutePost<TResponse>(ApiRequest request);
+        ApiResponse<TResponse> ExecutePost<TResponse>(ApiRequest request) where TResponse : new();
 
-        TResponse ExecutePut<TResponse>(ApiRequest request);
+        ApiResponse<TResponse> ExecutePut<TResponse>(ApiRequest request) where TResponse : new();
 
         void ExecuteDelete(ApiRequest request);
     }

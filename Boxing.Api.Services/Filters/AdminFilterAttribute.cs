@@ -1,38 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
-using System.Web;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web.Http;
 using System.Web.Http.Controllers;
-using System.Web.Http.Filters;
+using Boxing.Contracts;
+using Boxing.Core.Services.Exceptions;
 using Boxing.Core.Services.Interfaces;
 
 namespace Boxing.Api.Services.Filters
 {
-    public class AdminFilterAttribute : AuthorizationFilterAttribute
+    public class AdminFilterAttribute : AuthorizationTokenFilterAttribute
     {
-        public override async void OnAuthorization(HttpActionContext actionContext)
+        public override async Task OnAuthorizationAsync(HttpActionContext actionContext, CancellationToken cancellationToken)
         {
-            using (var scope = actionContext.Request.GetDependencyScope())
-            {
-                var header = actionContext.Request.Headers.FirstOrDefault(h => h.Key == "Admin-Token");
-                var tokenValue = header.Value?.FirstOrDefault();
-                if (string.IsNullOrEmpty(tokenValue))
-                {
-                    actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized,
-                    "Missing authentication token");
-                    return;
-                }
+            await base.OnAuthorizationAsync(actionContext, cancellationToken);
 
-                if (tokenValue != "secure_admin_token")
+            using (var scope = (IRolesService)actionContext.Request.GetDependencyScope().GetService(typeof(IRolesService)))
+            {
+                try
+                {
+                    var role = await scope.GetRoleForAuthenticationTokenAsync(base.AuthenticationToken);
+                    if (role != RolesEnum.Admin)
+                    {
+                        actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized,
+                            new HttpError("Unauthorized access."));
+                    }
+                }
+                catch (NotFoundException)
                 {
                     actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized,
-                        "Invalid authentication token");
-                    return;
+                           new HttpError("Unauthorized access."));
                 }
             }
-            base.OnAuthorization(actionContext);
         }
     }
 }

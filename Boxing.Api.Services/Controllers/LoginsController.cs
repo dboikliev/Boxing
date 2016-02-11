@@ -25,12 +25,14 @@ namespace Boxing.Api.Services.Controllers
         public async Task<HttpResponseMessage> Create(LoginModel login)
         {
             UserDto userDto = await _usersService.GetUserAsync(login.Username, login.Password);
-            LoginDto loginDto = _loginsService.CreateLogin(userDto.Id);
+            LoginDto loginDto = await _loginsService.CreateLoginAsync(userDto.Id);
             await _loginsService.SaveAsync();
             var result = new LoginModel()
             {
                 Id = loginDto.Id,
-                AuthenticationToken = login.AuthenticationToken
+                AuthenticationToken = loginDto.AuthenticationToken,
+                Username = loginDto.Username,
+                Role = loginDto.Role
             };
             return Request.CreateResponse(HttpStatusCode.Created, result);
         }
@@ -40,6 +42,7 @@ namespace Boxing.Api.Services.Controllers
         public async Task Delete(int id)
         {
             await _loginsService.DeleteLoginAsync(id);
+            await _loginsService.SaveAsync();
         }
 
         protected override void Dispose(bool disposing)

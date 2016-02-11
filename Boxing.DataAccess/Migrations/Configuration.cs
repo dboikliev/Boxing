@@ -1,3 +1,5 @@
+using Boxing.Core.DataAccess.Entities;
+
 namespace Boxing.Core.DataAccess.Migrations
 {
     using System;
@@ -26,6 +28,10 @@ namespace Boxing.Core.DataAccess.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+            context.Statuses.Add(new Status { Name = "Active" });
+            context.Statuses.Add(new Status { Name = "Finished" });
+            context.Statuses.Add(new Status { Name = "Canceled" });
+            context.SaveChanges();
         }
     }
 }

@@ -43,7 +43,9 @@
     <Compile Include="Dto\LoginDto.cs" />
     <Compile Include="Dto\MatchDto.cs" />
     <Compile Include="Dto\UserDto.cs" />
+    <Compile Include="MatchStatusesEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RolesEnum.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

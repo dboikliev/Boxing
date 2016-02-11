@@ -12,11 +12,11 @@ namespace Boxing.Core.DataAccess.Entities
         public string FullName { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
-        [ForeignKey("Login")]
-        [Index(IsUnique = true)]
-        public int? LoginId { get; set; }
-        public virtual Login Login { get; set; }
+        public Guid? AuthenticationToken { get; set; }
 
         public double Rating { get; set; }
+
+        public int RoleId { get; set; }
+        public Role Role { get; set; }
     }
 }

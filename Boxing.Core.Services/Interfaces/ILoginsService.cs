@@ -10,8 +10,8 @@ namespace Boxing.Core.Services.Interfaces
     public interface ILoginsService : IDisposable
     {
         Task<bool> IsValidTokenAsync(string authenticationToken);
-        LoginDto CreateLogin(int userId);
-        Task DeleteLoginAsync(int loginId);
+        Task<LoginDto> CreateLoginAsync(int userId);
+        Task DeleteLoginAsync(int userId);
         Task SaveAsync();
     }
 }

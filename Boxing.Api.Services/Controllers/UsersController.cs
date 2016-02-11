@@ -24,10 +24,11 @@ namespace Boxing.Api.Services.Controllers
         }
 
         [HttpPost]
-        public async Task<HttpResponseMessage> Post([FromBody]UserModel user)
+        public async Task<HttpResponseMessage> Create([FromBody]UserModel user)
         {
             var userDto = new UserDto
             {
+                Username = user.Username,
                 FullName = user.FullName,
                 Password = user.Password
             };
@@ -48,7 +49,6 @@ namespace Boxing.Api.Services.Controllers
             var update = _usersService.UpdateUser(userDto);
             var save = _usersService.SaveAsync();
             await Task.WhenAll(update, save);
-
         }
 
         protected override void Dispose(bool disposing)

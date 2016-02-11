@@ -16,7 +16,7 @@ namespace RestTestWebApp.Services
             this.configurationService = configurationService;
         }
 
-        public TResponse ExecuteGet<TResponse>(ApiRequest request)
+        public ApiResponse<TResponse> ExecuteGet<TResponse>(ApiRequest request) where TResponse : new()
         {
             try
             {
@@ -26,20 +26,21 @@ namespace RestTestWebApp.Services
                     {
                         if (response.IsSuccessStatusCode)
                         {
-                            return JsonConvert.DeserializeObject<TResponse>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
+                            var payload =  JsonConvert.DeserializeObject<TResponse>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
+                            return new ApiResponse<TResponse>() {Payload = payload, HttpStatusCode =  response.StatusCode };
                         }
 
-                        return default(TResponse);
+                        return new ApiResponse<TResponse>() { Payload = default(TResponse), HttpStatusCode = response.StatusCode };
                     }
                 }
             }
             catch
             {
-                return default(TResponse);
+                return new ApiResponse<TResponse>() { Payload = default(TResponse) };
             }
         }
 
-        public TResponse ExecutePost<TResponse>(ApiRequest request)
+        public ApiResponse<TResponse> ExecutePost<TResponse>(ApiRequest request) where TResponse : new()
         {
             try
             {
@@ -47,47 +48,57 @@ namespace RestTestWebApp.Services
                 {
                     using (StringContent requestContent = new StringContent(request.Request != null ? JsonConvert.SerializeObject(request.Request) : string.Empty, Encoding.UTF8, "application/json"))
                     {
+                        foreach (var header in request.Headers)
+                        {
+                            client.DefaultRequestHeaders.Add(header.Key, header.Value);
+                        }
                         using (var response = client.PostAsync(request.EndPoint, requestContent).GetAwaiter().GetResult())
                         {
                             if (response.IsSuccessStatusCode)
                             {
-                                return JsonConvert.DeserializeObject<TResponse>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
+                                var payload = JsonConvert.DeserializeObject<TResponse>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
+                                return new ApiResponse<TResponse>() { Payload = payload, HttpStatusCode = response.StatusCode };
                             }
 
-                            return default(TResponse);
+                            return new ApiResponse<TResponse>() { Payload = default(TResponse), HttpStatusCode = response.StatusCode };
                         }
                     }
                 }
             }
             catch
             {
-                return default(TResponse);
+                return new ApiResponse<TResponse>() { Payload = default(TResponse) };
             }
         }
 
-        public TResponse ExecutePut<TResponse>(ApiRequest request)
+        public ApiResponse<TResponse> ExecutePut<TResponse>(ApiRequest request) where TResponse : new()
         {
             try
             {
                 using (HttpClient client = GetHttpClient())
                 {
+                    foreach (var header in request.Headers)
+                    {
+                        client.DefaultRequestHeaders.Add(header.Key, header.Value);
+                    }
                     using (StringContent requestContent = new StringContent(request.Request != null ? JsonConvert.SerializeObject(request.Request) : string.Empty, Encoding.UTF8, "application/json"))
                     {
                         using (var response = client.PutAsync(request.EndPoint, requestContent).GetAwaiter().GetResult())
                         {
                             if (response.IsSuccessStatusCode)
                             {
-                                return JsonConvert.DeserializeObject<TResponse>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
+                                var payload = JsonConvert.DeserializeObject<TResponse>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
+                                return new ApiResponse<TResponse>() { Payload = payload, HttpStatusCode = response.StatusCode };
                             }
 
-                            return default(TResponse);
+                            return new ApiResponse<TResponse>() { Payload = default(TResponse), HttpStatusCode = response.StatusCode };
                         }
                     }
                 }
             }
             catch
             {
-                return default(TResponse);
+                return new ApiResponse<TResponse>() { Payload = default(TResponse) };
             }
         }
 
@@ -97,6 +108,10 @@ namespace RestTestWebApp.Services
             {
                 using (HttpClient client = GetHttpClient())
                 {
+                    foreach (var header in request.Headers)
+                    {
+                        client.DefaultRequestHeaders.Add(header.Key, header.Value);
+                    }
                     using (var response = client.DeleteAsync(request.EndPoint).GetAwaiter().GetResult())
                     {
                         response.EnsureSuccessStatusCode();

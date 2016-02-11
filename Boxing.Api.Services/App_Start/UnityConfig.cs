@@ -19,6 +19,7 @@ namespace Boxing.Api.Services
             container.RegisterType<IUsersService, UsersService>();
             container.RegisterType<IMatchesService, MatchesService>();
             container.RegisterType<ILoginsService, LoginsService>();
+            container.RegisterType<IRolesService, RolesService>();
             config.DependencyResolver = new UnityDependencyResolver(container);
         }
     }

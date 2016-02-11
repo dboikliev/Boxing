@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Boxing.Contracts;
 using Boxing.Contracts.Dto;
 using Boxing.Core.DataAccess;
 using Boxing.Core.DataAccess.Entities;
@@ -88,14 +89,24 @@ namespace Boxing.Core.Services.Implementations
 
         public void CreateUser(UserDto user)
         {
+            if (_context.Users.Any(u => u.Username == user.Username))
+            {
+                throw new BadRequestException($"User with username {user.Username} already exists");
+            }
+
             byte[] salt = PasswordHash.GenerateSalt();
             byte[] saltedPassword = PasswordHash.GenerateSaltedHash(user.Password, salt);
 
+            var role = _context.Roles.FirstOrDefault(r => r.Id == (int)RolesEnum.User);
+
             _context.Users.Add(new User
             {
+                Username = user.Username,
                 FullName = user.FullName,
                 PasswordHash = saltedPassword,
-                PasswordSalt = salt
+                PasswordSalt = salt,
+                AuthenticationToken = Guid.Empty,
+                Role = role
             });
         }
 

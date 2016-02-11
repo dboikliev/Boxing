@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Boxing.Contracts;
 using Boxing.Contracts.Dto;
 
 namespace Boxing.Core.Services.Interfaces
@@ -13,6 +14,8 @@ namespace Boxing.Core.Services.Interfaces
         Task<MatchDto> GetMatchAsync(int id);
         Task<IEnumerable<MatchDto>> GetMatches(int skip, int take);
         Task UpdateMatchAsync(MatchDto match);
+        Task<int> GetMatchesCount();
+        Task SetStatusAsync(int id, MatchStatusesEnum status);
         Task SaveAsync();
     }
 }
