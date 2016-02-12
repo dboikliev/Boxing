@@ -54,10 +54,12 @@
     <Compile Include="Helpers\PasswordHash.cs" />
     <Compile Include="Implementations\LoginsService.cs" />
     <Compile Include="Implementations\MatchesService.cs" />
+    <Compile Include="Implementations\PredictionsService.cs" />
     <Compile Include="Implementations\RolesService.cs" />
     <Compile Include="Implementations\UsersService.cs" />
     <Compile Include="Interfaces\ILoginsService.cs" />
     <Compile Include="Interfaces\IMatchesService.cs" />
+    <Compile Include="Interfaces\IPredictionsService.cs" />
     <Compile Include="Interfaces\IRolesService.cs" />
     <Compile Include="Interfaces\IUsersService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

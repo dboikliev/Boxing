@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Dto\LoginDto.cs" />
     <Compile Include="Dto\MatchDto.cs" />
+    <Compile Include="Dto\PredictionDto.cs" />
     <Compile Include="Dto\UserDto.cs" />
     <Compile Include="MatchStatusesEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

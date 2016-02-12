@@ -51,10 +51,12 @@
   <ItemGroup>
     <Compile Include="BoxingContext.cs" />
     <Compile Include="Configurations\MatchConfiguration.cs" />
+    <Compile Include="Configurations\PredictionConfiguration.cs" />
     <Compile Include="Configurations\RoleConfiguration.cs" />
     <Compile Include="Configurations\StatusConfiguration.cs" />
     <Compile Include="Configurations\UserConfiguration.cs" />
     <Compile Include="Entities\Match.cs" />
+    <Compile Include="Entities\Prediction.cs" />
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\Status.cs" />
     <Compile Include="Entities\User.cs" />
@@ -69,6 +71,14 @@
     <Compile Include="Migrations\201602102131247_AddMatchStatuses.cs" />
     <Compile Include="Migrations\201602102131247_AddMatchStatuses.Designer.cs">
       <DependentUpon>201602102131247_AddMatchStatuses.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602110633509_AddPredictions.cs" />
+    <Compile Include="Migrations\201602110633509_AddPredictions.Designer.cs">
+      <DependentUpon>201602110633509_AddPredictions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602112140548_AlterPredictionPredictedWinnerToInt.cs" />
+    <Compile Include="Migrations\201602112140548_AlterPredictionPredictedWinnerToInt.Designer.cs">
+      <DependentUpon>201602112140548_AlterPredictionPredictedWinnerToInt.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -86,6 +96,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602102131247_AddMatchStatuses.resx">
       <DependentUpon>201602102131247_AddMatchStatuses.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602110633509_AddPredictions.resx">
+      <DependentUpon>201602110633509_AddPredictions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602112140548_AlterPredictionPredictedWinnerToInt.resx">
+      <DependentUpon>201602112140548_AlterPredictionPredictedWinnerToInt.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

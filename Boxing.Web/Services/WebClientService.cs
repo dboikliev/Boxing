@@ -22,6 +22,10 @@ namespace RestTestWebApp.Services
             {
                 using (HttpClient client = GetHttpClient())
                 {
+                    foreach (var header in request.Headers)
+                    {
+                        client.DefaultRequestHeaders.Add(header.Key, header.Value);
+                    }
                     using (var response = client.GetAsync(request.EndPoint).GetAwaiter().GetResult())
                     {
                         if (response.IsSuccessStatusCode)

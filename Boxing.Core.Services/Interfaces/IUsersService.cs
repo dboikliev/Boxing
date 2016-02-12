@@ -10,8 +10,10 @@ namespace Boxing.Core.Services.Interfaces
         Task<UserDto> GetUserAsync(int userId);
         Task<UserDto> GetUserAsync(string username, string password);
         Task<IEnumerable<UserDto>> GetUsersAsync(int skip, int take, string sortBy, string order);
-        void CreateUser(UserDto user);
-        Task SaveAsync();
-        Task UpdateUser(UserDto user);
+        Task<UserDto> AddUserAsync(UserDto user);
+        Task UpdateUserAsync(UserDto user);
+        Task DeleteUserAsync(int userId);
+        Task<int> GetUsersCountAsync();
+        Task<UserDto> GetUserAsync(string username);
     }
 }

@@ -1,8 +1,9 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@using Boxing.Web.Constants
 @using Boxing.Web.Models
-@model Boxing.Web.ViewModels.MatchesListViewModel
+@model Boxing.Web.ViewModels.ListViewModel<Boxing.Web.ViewModels.MatchViewModel>
 
 <table>
     <thead>
@@ -17,7 +18,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var match in Model.Matches)
+        @foreach (var match in Model.Items)
         {
             <tr>
 
@@ -49,14 +50,25 @@
                 <td>
                     @match.Status.ToString()
                 </td>
+                <td>
+                    @if (match.PredictedWinner.HasValue)
+                    {
+                        @: @(match.PredictedWinner == 1 ? match.Boxer1 : match.Boxer2)
+                    }
+                </td>
+                <td>
+                    @if (match.Status == MatchStatusesEnum.Active)
+                    {
+                        @Html.ActionLink("Predict Winner", "CreatePrediction", new { matchId = match.Id })
+                    }
+                </td>
             </tr>
-
         }
     </tbody>
 </table>
 @for (int i = 1; i <= Model.PagesCount; i++)
 {
     <div style="display: inline-block">
-        @Html.ActionLink(i.ToString(), "Index", new { skip = (i - 1) * Model.MatchesPerPage, take = Model.MatchesPerPage })
+        @Html.ActionLink(i.ToString(), "Index", new { skip = (i - 1) * Model.ItemsPerPage, take = Model.ItemsPerPage })
     </div>
 }

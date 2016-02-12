@@ -7,7 +7,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @using Boxing.Web.Models
-@model Boxing.Web.ViewModels.MatchesListViewModel
+@model Boxing.Web.ViewModels.ListViewModel<Boxing.Web.ViewModels.MatchViewModel>
 @Html.ActionLink("Create match", "Create")
 <table>
     <thead>
@@ -22,7 +22,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var match in Model.Matches)
+        @foreach (var match in Model.Items)
         {
             <tr>
 
@@ -63,6 +63,6 @@
 @for (int i = 1; i <= Model.PagesCount; i++)
 {
     <div style="display: inline-block">
-        @Html.ActionLink(i.ToString(), "Manage", new { skip = (i - 1) * Model.MatchesPerPage, take = Model.MatchesPerPage })
+        @Html.ActionLink(i.ToString(), "Manage", new { skip = (i - 1) * Model.ItemsPerPage, take = Model.ItemsPerPage })
     </div>
 }

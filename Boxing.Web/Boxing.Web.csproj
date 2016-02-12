@@ -219,6 +219,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
+    <Compile Include="Constants\MatchStatusesEnum.cs" />
+    <Compile Include="Constants\PagingConstants.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MatchesController.cs" />
@@ -230,20 +232,21 @@
     <Compile Include="Models\ApiResponse.cs" />
     <Compile Include="Models\CancelMatchRequest.cs" />
     <Compile Include="Models\CreateMatchResponse.cs" />
-    <Compile Include="Models\GetMatchesResponse.cs" />
+    <Compile Include="Models\GetMatchesListResponse.cs" />
+    <Compile Include="Models\GetUsersListResponse.cs" />
     <Compile Include="Models\LoginResponse.cs" />
-    <Compile Include="Models\MatchStatusesEnum.cs" />
-    <Compile Include="Models\RegistrationResponse.cs" />
     <Compile Include="Models\RolesEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ConfigurationService.cs" />
     <Compile Include="Services\IConfigurationService.cs" />
     <Compile Include="Services\IWebClientService.cs" />
     <Compile Include="Services\WebClientService.cs" />
+    <Compile Include="ViewModels\ListViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
-    <Compile Include="ViewModels\MatchesListViewModel.cs" />
     <Compile Include="ViewModels\MatchViewModel.cs" />
+    <Compile Include="ViewModels\PredictionViewModel.cs" />
     <Compile Include="ViewModels\RegistrationViewModel.cs" />
+    <Compile Include="ViewModels\UserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -294,6 +297,9 @@
     <Content Include="Views\Matches\Create.cshtml" />
     <Content Include="Views\Matches\Edit.cshtml" />
     <Content Include="Views\Matches\Manage.cshtml" />
+    <Content Include="Views\Users\Manage.cshtml" />
+    <Content Include="Views\Matches\CreatePrediction.cshtml" />
+    <Content Include="Views\Users\UserDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

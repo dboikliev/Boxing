@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Boxing.Web.Constants;
 using Boxing.Web.Models;
 using Boxing.Web.ViewModels;
 using RestTestWebApp.Models;
@@ -21,14 +22,14 @@ namespace Boxing.Web.Controllers
         // GET: Match
         public ActionResult Index(int skip = 0 , int take = 5)
         {
-            var response = _webClientService.ExecuteGet<GetMatchesResponse>(new ApiRequest
+            var response = _webClientService.ExecuteGet<GetMatchesListResponse>(new ApiRequest
             {
                 EndPoint = $"matches?skip={skip}&take={take}"
             });
 
-            var matchesListModel = new MatchesListViewModel
+            var matchesListModel = new ListViewModel<MatchViewModel>
             {
-                Matches = response.Payload.Matches,
+                Items = response.Payload.Matches,
                 Total = response.Payload.Total,
                 Skipped = response.Payload.Skipped
             };
@@ -58,6 +59,29 @@ namespace Boxing.Web.Controllers
             return Manage();
         }
 
+        public ActionResult CreatePrediction(int matchId)
+        {
+            return View(new PredictionViewModel() { MatchId = matchId });
+        }
+
+        [HttpPost]
+        public ActionResult CreatePrediction(PredictionViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            model.UserId = ((int?) Session["UserId"]).GetValueOrDefault();
+            var request = new ApiRequest
+            {
+                EndPoint = $"matches/{model.MatchId}/predictions",
+                Request = model
+            };
+            request.Headers["Authentication-Token"] = Session["Authentication-Token"] as string;
+            _webClientService.ExecutePost<object>(request);
+            return View("Index");
+        }
+
         public ActionResult Edit(int matchId)
         {
             var response = _webClientService.ExecuteGet<MatchViewModel>(new ApiRequest
@@ -85,16 +109,16 @@ namespace Boxing.Web.Controllers
             return Manage();
         }
 
-        public ActionResult Manage(int skip = 0, int take = 5)
+        public ActionResult Manage(int skip = 0, int take = PagingConstants.MatchesPerPage)
         {
-            var response = _webClientService.ExecuteGet<GetMatchesResponse>(new ApiRequest
+            var response = _webClientService.ExecuteGet<GetMatchesListResponse>(new ApiRequest
             {
                 EndPoint = $"matches?skip={skip}&take={take}"
             });
 
-            var matchesListModel = new MatchesListViewModel
+            var matchesListModel = new ListViewModel<MatchViewModel>()
             {
-                Matches = response.Payload.Matches,
+                Items = response.Payload.Matches,
                 Total = response.Payload.Total,
                 Skipped = response.Payload.Skipped
             };

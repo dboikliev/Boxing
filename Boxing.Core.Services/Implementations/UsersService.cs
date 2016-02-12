@@ -30,7 +30,7 @@ namespace Boxing.Core.Services.Implementations
 
         public async Task<UserDto> GetUserAsync(int userId)
         {
-            User user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            User user = await _context.Users.Include(u => u.Predictions.Select(p => p.Match)).FirstOrDefaultAsync(u => u.Id == userId);
             if (user ==  null)
             {
                 throw new NotFoundException();
@@ -39,30 +39,31 @@ namespace Boxing.Core.Services.Implementations
             UserDto userDto = new UserDto
             {
                 Id = user.Id,
-                FullName = user.FullName
+                FullName = user.FullName,
+                Rating = user.Predictions.Count(p => p.Match.Winner == p.PredictedWinner && p.Match.StatusId == (int)MatchStatusesEnum.Finished) * 100D / user.Predictions.Count,
             };
             return userDto;
         }
 
         public async Task<UserDto> GetUserAsync(string username, string password)
         {
-            User user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+            User user = await _context.Users.Include(u => u.Predictions.Select(p => p.Match)).FirstOrDefaultAsync(u => u.Username == username);
             if (user == null)
             {
                 throw new NotFoundException();
             }
          
             byte[] submittedPasswordHash = PasswordHash.GenerateSaltedHash(password, user.PasswordSalt);
-            var isValidPassword = Enumerable.SequenceEqual(user.PasswordHash, submittedPasswordHash);
+            var isValidPassword = user.PasswordHash.SequenceEqual(submittedPasswordHash);
             if (!isValidPassword)
             {
                 throw new NotFoundException();
             }
-
             UserDto userDto = new UserDto
             {
                 Id = user.Id,
-                FullName = user.FullName
+                FullName = user.FullName,
+                Rating = user.Predictions.Count(p => p.Match.Winner == p.PredictedWinner && p.Match.StatusId == (int)MatchStatusesEnum.Finished) * 100D / user.Predictions.Count,
             };
             return userDto;
         }
@@ -70,24 +71,61 @@ namespace Boxing.Core.Services.Implementations
 
         public async Task<IEnumerable<UserDto>> GetUsersAsync(int skip, int take, string sortBy, string order)
         {
+            if (skip < 0)
+            {
+                throw new BadRequestException("The skip parameter must be a non-negative value");
+            }
+
+            if (take < 0)
+            {
+                throw new BadRequestException("The take parameter must be a non-negative value");
+            }
+
+            if (sortBy != "rating" && sortBy != "fullName")
+            {
+                throw new BadRequestException("Invalid sortBy parameter");
+            }
+
+            if (order != "asc" && order != "desc")
+            {
+                throw new BadRequestException("Inalid order parameter");
+            }
+
             IQueryable<User> query = _context.Users;
             if (sortBy == "rating")
             {
-                query = query.OrderBy(u => u.Rating);
+                if (order == "asc")
+                {
+                    query = query.OrderBy(u => u.Rating);
+                }
+                else if (order == "desc")
+                {
+                    query = query.OrderByDescending(u => u.Predictions.Count(p => p.Match.Winner == p.PredictedWinner) * 100D / u.Predictions.Count);
+                }
             }
-            else
+            else if (sortBy == "fullName")
             {
-                query = query.OrderBy(u => u.FullName);
+
+                if (order == "asc")
+                {
+                    query = query.OrderBy(u => u.FullName);
+                }
+                else if (order == "desc")
+                {
+                    query = query.OrderByDescending(u => u.FullName);
+                }
             }
             IEnumerable<UserDto> users = await query.Skip(skip).Take(take).Select(u => new UserDto
             {
                 Id = u.Id,
-                FullName = u.FullName
+                FullName = u.FullName,
+                Username = u.Username,
+                Rating = u.Predictions.Count(p => p.Match.Winner == p.PredictedWinner && p.Match.StatusId == (int)MatchStatusesEnum.Finished) * 100D / u.Predictions.Count,
             }).ToListAsync();
             return users;
         }
 
-        public void CreateUser(UserDto user)
+        public async Task<UserDto> AddUserAsync(UserDto user)
         {
             if (_context.Users.Any(u => u.Username == user.Username))
             {
@@ -99,7 +137,7 @@ namespace Boxing.Core.Services.Implementations
 
             var role = _context.Roles.FirstOrDefault(r => r.Id == (int)RolesEnum.User);
 
-            _context.Users.Add(new User
+            var created = _context.Users.Add(new User
             {
                 Username = user.Username,
                 FullName = user.FullName,
@@ -108,14 +146,15 @@ namespace Boxing.Core.Services.Implementations
                 AuthenticationToken = Guid.Empty,
                 Role = role
             });
-        }
-
-        public async Task SaveAsync()
-        {
             await _context.SaveChangesAsync();
+            return new UserDto
+            {
+                Id = created.Id,
+                Rating = created.Rating
+            };
         }
 
-        public async Task UpdateUser(UserDto userDto)
+        public async Task UpdateUserAsync(UserDto userDto)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userDto.Id);
             if (user == null)
@@ -124,6 +163,36 @@ namespace Boxing.Core.Services.Implementations
             }
 
             user.FullName = userDto.FullName;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteUserAsync(int userId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            if (user == null)
+            {
+                throw new NotFoundException($"User with Id {userId} could not be found");
+            }
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> GetUsersCountAsync()
+        {
+            return await _context.Users.CountAsync();
+        }
+
+        public async Task<UserDto> GetUserAsync(string username)
+        {
+            var user = await _context.Users.Include(u => u.Predictions.Select(p => p.Match)).FirstOrDefaultAsync(u => u.Username == username);
+            return new UserDto
+            {
+                Id = user.Id,
+                FullName = user.FullName,
+                Rating = user.Predictions.Count(p => p.Match.Winner == p.PredictedWinner && p.Match.StatusId == (int)MatchStatusesEnum.Finished) * 100D / user.Predictions.Count,
+                Username = user.Username
+            };
         }
     }
 }

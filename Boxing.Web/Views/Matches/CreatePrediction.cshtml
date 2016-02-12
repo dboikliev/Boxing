@@ -1,0 +1,21 @@
+﻿@model Boxing.Web.ViewModels.PredictionViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("CreatePrediction", "Matches"))
+{
+    @Html.HiddenFor(m => m.MatchId)
+    <ul>
+        <li>
+            @Html.RadioButtonFor(m => m.PredictedWinner, 1)
+            <span>1</span>
+        </li>
+        <li>
+            @Html.RadioButtonFor(m => m.PredictedWinner, 2)
+            <span>2</span>
+        </li>
+    </ul>
+    <input type="submit" value="Save"/>
+}

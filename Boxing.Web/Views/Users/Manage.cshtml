@@ -1,0 +1,59 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@{
+    var fullNameOrder = "asc";
+    if (Model.SortedBy == "fullName")
+    {
+        fullNameOrder = Model.IsAscending ? "desc" : "asc";
+    }
+
+    var ratingOrder = "asc";
+    if (Model.SortedBy == "rating")
+    {
+        ratingOrder = Model.IsAscending ? "desc" : "asc";
+    }
+}
+@model Boxing.Web.ViewModels.ListViewModel<Boxing.Web.ViewModels.UserViewModel>
+<table>
+    <thead>
+    <tr>
+        <th>Username</th>
+        <th>@Html.ActionLink("Full Name", "Manage", new { skip = Model.Skipped, take = Model.ItemsPerPage, sortBy = "fullName", order = fullNameOrder })</th>
+        <th>@Html.ActionLink("Rating", "Manage", new { skip = Model.Skipped, take = Model.ItemsPerPage, sortBy = "rating", order = ratingOrder })</th>
+    </tr>
+    </thead>
+    <tbody>
+        @foreach (var match in Model.Items)
+        {
+            <tr>
+
+                <td>
+                    @match.Username
+                </td>
+                <td>
+                    @match.FullName
+                </td>
+                <td>
+                    @match.Rating
+                </td>
+                <td>
+                    @using (Html.BeginForm("DeleteUser"))
+                    {
+                        @Html.HiddenFor(m => match.UserId);
+                        <input type="submit" value="Delete"/>
+                    }
+                </td>
+            </tr>
+
+        }
+    </tbody>
+</table>
+@for (int i = 1; i <= Model.PagesCount; i++)
+{
+    <div style="display: inline-block">
+        @Html.ActionLink(i.ToString(), "Manage", new { skip = (i - 1) * Model.ItemsPerPage, take = Model.ItemsPerPage })
+    </div>
+}

@@ -7,7 +7,7 @@
 
     <ul class="nav navbar-nav navbar-right">
         <li>
-            <span>Hello @Session["Username"]!</span>
+            @Html.ActionLink($"Hello, { Session["Username"] }!", "UserDetails", "Users", routeValues: new { username = Session["Username"] }, htmlAttributes: null)
         </li>
         <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
     </ul>

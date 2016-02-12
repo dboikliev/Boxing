@@ -58,7 +58,7 @@ namespace Boxing.Web.Controllers
         {
             _webClientService.ExecuteDelete(new ApiRequest
             {
-                EndPoint = $"logins?id={(int?)Session["UserId"]}",
+                EndPoint = $"logins/{(int?)Session["UserId"]}",
             });
 
             Session["Authentication-Token"] = null;

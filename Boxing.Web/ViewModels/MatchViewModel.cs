@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Boxing.Web.Constants;
 using Boxing.Web.Models;
 
 namespace Boxing.Web.ViewModels
@@ -25,6 +26,8 @@ namespace Boxing.Web.ViewModels
         public string Description { get; set; }
         [Range(1, 2)]
         public int? Winner { get; set; }
+
+        public int? PredictedWinner { get; set; }
 
         public MatchStatusesEnum Status { get; set; }
     }

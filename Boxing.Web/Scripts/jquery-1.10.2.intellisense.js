@@ -926,7 +926,7 @@ intellisense.annotate(jQuery.fn, {
   },
   'attributeMultiple': function() {
     /// <signature>
-    ///   <summary>Matches elements that match all of the specified attribute filters.</summary>
+    ///   <summary>Items elements that match all of the specified attribute filters.</summary>
     ///   <param name="attributeFilter1" type="String">An attribute filter.</param>
     ///   <param name="attributeFilter2" type="String">Another attribute filter, reducing the selection even more</param>
     ///   <param name="attributeFilterN" type="String">As many more attribute filters as necessary</param>
@@ -1013,7 +1013,7 @@ intellisense.annotate(jQuery.fn, {
     /// <summary>Selects all elements of type checkbox.</summary>
   },
   'checked': function() {
-    /// <summary>Matches all elements that are checked.</summary>
+    /// <summary>Items all elements that are checked.</summary>
   },
   'child': function() {
     /// <signature>

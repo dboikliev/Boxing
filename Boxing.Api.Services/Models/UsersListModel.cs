@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Boxing.Web.ViewModels;
 
-namespace Boxing.Web.Models
+namespace Boxing.Api.Services.Models
 {
-    public class GetMatchesResponse
+    public class UsersListModel
     {
         public int Total { get; set; }
         public int Skipped { get; set; }
-        public IEnumerable<MatchViewModel> Matches { get; set; }
+        public IEnumerable<UserModel> Users { get; set; }
     }
 }

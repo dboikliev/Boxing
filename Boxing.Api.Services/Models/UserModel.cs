@@ -8,6 +8,7 @@ namespace Boxing.Api.Services.Models
 {
     public class UserModel
     {
+        public int? UserId { get; set; }
         [Required(AllowEmptyStrings = false)]
         [MaxLength(50)]
         public string Username { get; set; }
@@ -21,5 +22,7 @@ namespace Boxing.Api.Services.Models
 
         [Compare(nameof(Password))]
         public string RepeatedPassword { get; set; }
+
+        public double? Rating { get; set; }
     }
 }

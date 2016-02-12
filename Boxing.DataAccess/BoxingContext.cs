@@ -17,6 +17,8 @@ namespace Boxing.Core.DataAccess
         public DbSet<Role> Roles { get; set; }
         public DbSet<Status> Statuses { get; set; }
 
+        public DbSet<Prediction> Predictions { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -25,6 +27,7 @@ namespace Boxing.Core.DataAccess
             modelBuilder.Configurations.Add(new MatchConfiguration());
             modelBuilder.Configurations.Add(new RoleConfiguration());
             modelBuilder.Configurations.Add(new StatusConfiguration());
+            modelBuilder.Configurations.Add(new PredictionConfiguration());
         }
 
         public static void SetInitializer()

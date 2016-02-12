@@ -1,0 +1,15 @@
+﻿@model Boxing.Web.ViewModels.UserViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.FullName</h2>
+<div>
+    @Html.LabelFor(m => m.Username)
+    @Html.DisplayFor(m => m.Username)
+</div>
+<div>
+    @Html.LabelFor(m => m.Rating)
+    @Html.DisplayFor(m => m.Rating)
+</div>

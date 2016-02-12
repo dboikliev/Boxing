@@ -114,7 +114,6 @@
     <Compile Include="Filters\AdminFilterAttribute.cs" />
     <Compile Include="Filters\AuthorizationTokenFilterAttribute.cs" />
     <Compile Include="Filters\ExceptionFilterAttribute.cs" />
-    <Compile Include="Filters\RequireSecureConnectionFilterAttribute.cs" />
     <Compile Include="Filters\ValidationFilterAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -122,7 +121,9 @@
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\MatchesListModel.cs" />
     <Compile Include="Models\MatchModel.cs" />
+    <Compile Include="Models\PredictionModel.cs" />
     <Compile Include="Models\UserModel.cs" />
+    <Compile Include="Models\UsersListModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

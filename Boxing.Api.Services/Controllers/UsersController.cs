@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -18,9 +19,26 @@ namespace Boxing.Api.Services.Controllers
         }
 
         [HttpGet]
-        public async Task<UserDto> Get(int id)
+        public async Task<UserDto> Get(string username)
         {
-            return await _usersService.GetUserAsync(id);
+            return await _usersService.GetUserAsync(username);
+        }
+
+        [HttpGet]
+        public async Task<UsersListModel> Get(int skip, int take, string sortBy, string order)
+        {
+            var users = await _usersService.GetUsersAsync(skip, take, sortBy, order);
+            return new UsersListModel
+            {
+                Skipped = skip,
+                Total = await _usersService.GetUsersCountAsync(),
+                Users = users.Select(u => new UserModel
+                {
+                    UserId = u.Id,
+                    FullName = u.FullName,
+                    Rating = u.Rating
+                })
+            };
         }
 
         [HttpPost]
@@ -32,9 +50,12 @@ namespace Boxing.Api.Services.Controllers
                 FullName = user.FullName,
                 Password = user.Password
             };
-            _usersService.CreateUser(userDto);
-            await _usersService.SaveAsync();
-            return Request.CreateResponse(HttpStatusCode.Created);
+            var created = await _usersService.AddUserAsync(userDto);
+            return Request.CreateResponse(HttpStatusCode.Created, new UserModel
+            {
+                UserId = created.Id,
+                Rating = created.Rating
+            });
         }
 
         [HttpPut]
@@ -46,9 +67,14 @@ namespace Boxing.Api.Services.Controllers
                 FullName = user.FullName
             };
 
-            var update = _usersService.UpdateUser(userDto);
-            var save = _usersService.SaveAsync();
-            await Task.WhenAll(update, save);
+            await _usersService.UpdateUserAsync(userDto);
+        }
+
+        [HttpDelete]
+        public async Task<HttpResponseMessage> Delete(int id)
+        {
+            await _usersService.DeleteUserAsync(id);
+            return Request.CreateResponse(HttpStatusCode.NoContent);
         }
 
         protected override void Dispose(bool disposing)

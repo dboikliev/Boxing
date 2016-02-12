@@ -27,12 +27,16 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     @if (Session["Username"] is string)
                     {
-                        <li>@Html.ActionLink("Matches", "Index", "Matches")</li>
-                    }
-                    @if (Session["Role"] is RolesEnum && (RolesEnum)Session["Role"] == RolesEnum.Admin)
-                    {
-                        <li>@Html.ActionLink("Manage Matches", "Manage", "Matches")</li>
-                        <li>@Html.ActionLink("Manage Users", "Index", "Users")</li>
+                        if (Session["Role"] is RolesEnum && (RolesEnum)Session["Role"] == RolesEnum.User)
+                        {
+                            <li> @Html.ActionLink("Matches", "Index", "Matches")</li>
+                        }
+
+                        if (Session["Role"] is RolesEnum && (RolesEnum)Session["Role"] == RolesEnum.Admin)
+                        {
+                            <li>@Html.ActionLink("Manage Matches", "Manage", "Matches")</li>
+                            <li>@Html.ActionLink("Manage Users", "Manage", "Users")</li>
+                        }
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")

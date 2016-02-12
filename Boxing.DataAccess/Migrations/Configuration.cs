@@ -27,11 +27,7 @@ namespace Boxing.Core.DataAccess.Migrations
             //      new Person { FullName = "Brice Lambson" },
             //      new Person { FullName = "Rowan Miller" }
             //    );
-            //
-            context.Statuses.Add(new Status { Name = "Active" });
-            context.Statuses.Add(new Status { Name = "Finished" });
-            context.Statuses.Add(new Status { Name = "Canceled" });
-            context.SaveChanges();
+            
         }
     }
 }
